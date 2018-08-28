@@ -1,8 +1,15 @@
 package com.example.worldskills.myapplication;
 
+import android.graphics.Color;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
 
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.Volley;
 import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -10,20 +17,85 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.maps.model.PolylineOptions;
+import com.google.maps.android.PolyUtil;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {
 
     private GoogleMap mMap;
 
-    //JsonObjectRequest objectRequest;
+    JsonObjectRequest objectRequest;
+    RequestQueue request;
+
+
+    String lactitudI = "4.596616112679607";
+    String longitudI = "-74.07291412353516";
+
+    String lactitudF = "-0.3534564348305434";
+    String longitudF = "-78.43953308300695";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        request = Volley.newRequestQueue(getApplicationContext());
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_maps);
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
+
+
+        cargarWebservices(lactitudI, longitudI, longitudF, lactitudF);
+    }
+
+    private void cargarWebservices(String lactitudI, String longitudI, String longitudF, String lactitudF) {
+        String url = "https://maps.googleapis.com/maps/api/directions/json?origin=" + lactitudI + "," + longitudI + "&destination=" + lactitudF + "," + longitudF;
+        objectRequest = new JsonObjectRequest(Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
+            @Override
+            public void onResponse(JSONObject response) {
+                cargarPuntos(response);
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+
+            }
+        }
+        );
+    }
+
+
+    List cargarPuntos(JSONObject json) {
+        List lita = new ArrayList();
+        JSONArray jRoutes, jLegs, jSteps;
+
+        try {
+            jRoutes = json.getJSONArray("routes");
+            for (int i = 0; i<jRoutes.length();i++) {
+                jLegs = ((JSONObject) (jRoutes.get(i))).getJSONArray("legs");
+                for (int j = 0; j < jLegs.length(); j++) {
+                    jSteps = ((JSONObject)(jLegs.get(i))).getJSONArray("steps");
+                    for (int k = 0; k <jSteps.length(); k ++){
+                        String polyline = "";
+                        polyline = ""+((JSONObject)((JSONObject) jSteps.get(i)).get("polyline")).get("points");
+                        List<LatLng> list = PolyUtil.decode(polyline);
+                        mMap.addPolyline(new PolylineOptions().addAll(list).color(Color.GREEN));
+                    }
+                }
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        return lita;
     }
 
 
