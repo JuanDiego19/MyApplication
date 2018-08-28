@@ -84,9 +84,9 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             for (int i = 0; i<jRoutes.length();i++) {
                 jLegs = ((JSONObject) (jRoutes.get(i))).getJSONArray("legs");
                 for (int j = 0; j < jLegs.length(); j++) {
-                    jSteps = ((JSONObject)(jLegs.get(i))).getJSONArray("steps");
+                    jSteps = ((JSONObject)(jLegs.get(j))).getJSONArray("steps");
                     for (int k = 0; k <jSteps.length(); k ++){
-                        polyline = ""+((JSONObject)((JSONObject) jSteps.get(i)).get("polyline")).get("points");
+                        polyline = ""+((JSONObject)((JSONObject) jSteps.get(k)).get("polyline")).get("points");
                         List<LatLng> list = PolyUtil.decode(polyline);
                         mMap.addPolyline(new PolylineOptions().addAll(list).color(Color.GREEN));
                     }
