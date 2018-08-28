@@ -3,6 +3,7 @@ package com.example.worldskills.myapplication;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
 
+import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -40,8 +41,18 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         mMap = googleMap;
 
         // Add a marker in Sydney and move the camera
-        LatLng sydney = new LatLng(-34, 151);
-        mMap.addMarker(new MarkerOptions().position(sydney).title("Marker in Sydney"));
+        LatLng sydney = new LatLng(4.595186099999999, -74.1116487);
+        mMap.addMarker(new MarkerOptions().position(sydney).title("Ubicacion"));
         mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
+
+
+        LatLng sydne2 = new LatLng(4.588545202924698, -74.1659642288933);
+        mMap.addMarker(new MarkerOptions().position(sydne2).title("dos"));
+        mMap.moveCamera(CameraUpdateFactory.newLatLng(sydne2));
+        LatLng sydney3 = new LatLng(4.599187301317924, -74.06714571858816);
+        mMap.addMarker(new MarkerOptions().position(sydney3).title("tres"));
+        mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney3));
+
+        mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(sydney3,10));
     }
 }
