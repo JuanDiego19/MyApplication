@@ -77,6 +77,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     List cargarPuntos(JSONObject json) {
         List lita = new ArrayList();
         JSONArray jRoutes, jLegs, jSteps;
+        String polyline = "";
 
         try {
             jRoutes = json.getJSONArray("routes");
@@ -85,7 +86,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 for (int j = 0; j < jLegs.length(); j++) {
                     jSteps = ((JSONObject)(jLegs.get(i))).getJSONArray("steps");
                     for (int k = 0; k <jSteps.length(); k ++){
-                        String polyline = "";
                         polyline = ""+((JSONObject)((JSONObject) jSteps.get(i)).get("polyline")).get("points");
                         List<LatLng> list = PolyUtil.decode(polyline);
                         mMap.addPolyline(new PolylineOptions().addAll(list).color(Color.GREEN));
