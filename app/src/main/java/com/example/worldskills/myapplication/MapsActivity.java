@@ -3,6 +3,7 @@ package com.example.worldskills.myapplication;
 import android.graphics.Color;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
+import android.widget.Toast;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -35,16 +36,15 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     RequestQueue request;
 
 
-    String lactitudI = "4.596616112679607";
-    String longitudI = "-74.07291412353516";
+    String lactitudI = "4.618517759279144";
+    String longitudI = "-74.0859603881836";
 
-    String lactitudF = "-0.3534564348305434";
-    String longitudF = "-78.43953308300695";
+    String lactitudF = "4.6155234333727755";
+    String longitudF = "-74.0683650970459";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         request = Volley.newRequestQueue(getApplicationContext());
-
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_maps);
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
@@ -52,13 +52,12 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
 
-
         cargarWebservices(lactitudI, longitudI, longitudF, lactitudF);
     }
 
     private void cargarWebservices(String lactitudI, String longitudI, String longitudF, String lactitudF) {
-        String url="https://maps.googleapis.com/maps/api/directions/json?origin=4.547195915737696,-75.66195130348206&destination=4.540984,-75.668126";
-        //String url = "https://maps.googleapis.com/maps/api/directions/json?origin=" + lactitudI + "," + longitudI + "&destination=" + lactitudF + "," + longitudF;
+        //String url="https://maps.googleapis.com/maps/api/directions/json?origin=4.547195915737696,-75.66195130348206&destination=4.540984,-75.668126";
+        String url = "https://maps.googleapis.com/maps/api/directions/json?origin=" + lactitudI + "," + longitudI + "&destination=" + lactitudF + "," + longitudF;
         objectRequest = new JsonObjectRequest(Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
@@ -67,19 +66,20 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-
+                Toast.makeText(getApplicationContext(),""+error.toString(),Toast.LENGTH_SHORT).show();
             }
         }
         );
+        request.add(objectRequest);
     }
 
 
-    List cargarPuntos(JSONObject json) {
+    private List cargarPuntos(JSONObject json) {
         List lita = new ArrayList();
         JSONArray jRoutes, jLegs, jSteps;
         String polyline = "";
 
-        //holiiiiiiiiiiiiiii
+        //mono
 
         try {
             jRoutes = json.getJSONArray("routes");
@@ -90,7 +90,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                     for (int k = 0; k <jSteps.length(); k ++){
                         polyline = ""+((JSONObject)((JSONObject) jSteps.get(k)).get("polyline")).get("points");
                         List<LatLng> list = PolyUtil.decode(polyline);
-                        mMap.addPolyline(new PolylineOptions().addAll(list).color(Color.GREEN));
+                        mMap.addPolyline(new PolylineOptions().addAll(list).color(Color.MAGENTA));
                     }
                 }
             }

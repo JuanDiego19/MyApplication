@@ -4,20 +4,33 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    tools:context=".MainActivity">
 
-  <Button
-      android:layout_width="wrap_content"
-      android:layout_height="wrap_content"
-      android:text="Mapa"
-      android:onClick="onClick"
-      android:id="@+id/mapa"/>
+    <Button
+        android:id="@+id/mapa"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:onClick="onClick"
+        android:text="Mapa" />
 
-  <Chronometer
-      android:id="@+id/crono"
-      android:layout_width="match_parent"
-      android:layout_height="wrap_content"
-      tools:layout_editor_absoluteX="0dp"
-      tools:layout_editor_absoluteY="58dp" />
+    <Chronometer
+        android:id="@+id/crono"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        tools:layout_editor_absoluteX="0dp"
+        tools:layout_editor_absoluteY="58dp" />
+
+    <EditText
+        android:id="@+id/numero"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:inputType="number" />
+
+    <Button
+        android:id="@+id/registr"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:onClick="onClic"
+        android:text="Mapa" />
 </LinearLayout>
