@@ -57,7 +57,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     }
 
     private void cargarWebservices(String lactitudI, String longitudI, String longitudF, String lactitudF) {
-        String url = "https://maps.googleapis.com/maps/api/directions/json?origin=" + lactitudI + "," + longitudI + "&destination=" + lactitudF + "," + longitudF;
+        String url="https://maps.googleapis.com/maps/api/directions/json?origin=4.547195915737696,-75.66195130348206&destination=4.540984,-75.668126";
+        //String url = "https://maps.googleapis.com/maps/api/directions/json?origin=" + lactitudI + "," + longitudI + "&destination=" + lactitudF + "," + longitudF;
         objectRequest = new JsonObjectRequest(Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
